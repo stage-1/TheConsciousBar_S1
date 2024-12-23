@@ -47,7 +47,18 @@ NOTE TO DEVELOPERS: welcome to Impact theme! We hope that you will enjoy editing
     {%- render 'microdata-schema' -%}
     {%- render 'css-variables' -%}
     {%- render 'js-variables' -%}
-    {% render 'revenueRoll-GTM' %}
+
+    <!-- S1 Edit: Deferal of custom revenueRoll GTM Script -->
+    {% comment %} {% render 'revenueRoll-GTM' %} {% endcomment %}
+    {% comment %} Replacing revenueRoll-GTM Liquid code {% endcomment %}
+    <script>
+      setTimeout(function () {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = "https://ss.theconsciousbar.co/43tfockxneunp.js?5jrd90=aWQ9R1RNLVRUWlJDMjQ%3D&sort=desc";
+        document.body.appendChild(script);
+      }, 3000); // Delay by 3 seconds
+    </script>
 
     <script>
       if (!(HTMLScriptElement.supports && HTMLScriptElement.supports('importmap'))) {
