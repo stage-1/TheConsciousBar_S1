@@ -1,0 +1,192 @@
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-BlackItalic.eot');
+    src: local('Quincy CF Black Italic'), local('QuincyCF-BlackItalic'),
+        url('QuincyCF-BlackItalic.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-BlackItalic.woff2') format('woff2'),
+        url('QuincyCF-BlackItalic.woff') format('woff'),
+        url('QuincyCF-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-BoldItalic.eot');
+    src: local('Quincy CF Bold Italic'), local('QuincyCF-BoldItalic'),
+        url('QuincyCF-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-BoldItalic.woff2') format('woff2'),
+        url('QuincyCF-BoldItalic.woff') format('woff'),
+        url('QuincyCF-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-Black.eot');
+    src: local('Quincy CF Black'), local('QuincyCF-Black'),
+        url('QuincyCF-Black.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-Black.woff2') format('woff2'),
+        url('QuincyCF-Black.woff') format('woff'),
+        url('QuincyCF-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-Medium.eot');
+    src: local('Quincy CF Medium'), local('QuincyCF-Medium'),
+        url('QuincyCF-Medium.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-Medium.woff2') format('woff2'),
+        url('QuincyCF-Medium.woff') format('woff'),
+        url('QuincyCF-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-LightItalic.eot');
+    src: local('Quincy CF Light Italic'), local('QuincyCF-LightItalic'),
+        url('QuincyCF-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-LightItalic.woff2') format('woff2'),
+        url('QuincyCF-LightItalic.woff') format('woff'),
+        url('QuincyCF-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Quincy CF Text';
+    src: url('QuincyCF-Text.eot');
+    src: local('Quincy CF Text'), local('QuincyCF-Text'),
+        url('QuincyCF-Text.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-Text.woff2') format('woff2'),
+        url('QuincyCF-Text.woff') format('woff'),
+        url('QuincyCF-Text.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Quincy CF Extra';
+    src: url('QuincyCF-ExtraBold.eot');
+    src: local('Quincy CF Extra Bold'), local('QuincyCF-ExtraBold'),
+        url('QuincyCF-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-ExtraBold.woff2') format('woff2'),
+        url('QuincyCF-ExtraBold.woff') format('woff'),
+        url('QuincyCF-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Quincy CF Extra';
+    src: url('QuincyCF-ExtraBoldItalic.eot');
+    src: local('Quincy CF Extra Bold Italic'), local('QuincyCF-ExtraBoldItalic'),
+        url('QuincyCF-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-ExtraBoldItalic.woff2') format('woff2'),
+        url('QuincyCF-ExtraBoldItalic.woff') format('woff'),
+        url('QuincyCF-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-MediumItalic.eot');
+    src: local('Quincy CF Medium Italic'), local('QuincyCF-MediumItalic'),
+        url('QuincyCF-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-MediumItalic.woff2') format('woff2'),
+        url('QuincyCF-MediumItalic.woff') format('woff'),
+        url('QuincyCF-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Quincy CF Text';
+    src: url('QuincyCF-TextItalic.eot');
+    src: local('Quincy CF Text Italic'), local('QuincyCF-TextItalic'),
+        url('QuincyCF-TextItalic.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-TextItalic.woff2') format('woff2'),
+        url('QuincyCF-TextItalic.woff') format('woff'),
+        url('QuincyCF-TextItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-ThinItalic.eot');
+    src: local('Quincy CF Thin Italic'), local('QuincyCF-ThinItalic'),
+        url('QuincyCF-ThinItalic.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-ThinItalic.woff2') format('woff2'),
+        url('QuincyCF-ThinItalic.woff') format('woff'),
+        url('QuincyCF-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-Thin.eot');
+    src: local('Quincy CF Thin'), local('QuincyCF-Thin'),
+        url('QuincyCF-Thin.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-Thin.woff2') format('woff2'),
+        url('QuincyCF-Thin.woff') format('woff'),
+        url('QuincyCF-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-RegularItalic.eot');
+    src: local('Quincy CF Italic'), local('QuincyCF-RegularItalic'),
+        url('QuincyCF-RegularItalic.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-RegularItalic.woff2') format('woff2'),
+        url('QuincyCF-RegularItalic.woff') format('woff'),
+        url('QuincyCF-RegularItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-Regular.eot');
+    src: local('Quincy CF'), local('QuincyCF-Regular'),
+        url('QuincyCF-Regular.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-Regular.woff2') format('woff2'),
+        url('QuincyCF-Regular.woff') format('woff'),
+        url('QuincyCF-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-Bold.eot');
+    src: local('Quincy CF Bold'), local('QuincyCF-Bold'),
+        url('QuincyCF-Bold.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-Bold.woff2') format('woff2'),
+        url('QuincyCF-Bold.woff') format('woff'),
+        url('QuincyCF-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Quincy CF';
+    src: url('QuincyCF-Light.eot');
+    src: local('Quincy CF Light'), local('QuincyCF-Light'),
+        url('QuincyCF-Light.eot?#iefix') format('embedded-opentype'),
+        url('QuincyCF-Light.woff2') format('woff2'),
+        url('QuincyCF-Light.woff') format('woff'),
+        url('QuincyCF-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+

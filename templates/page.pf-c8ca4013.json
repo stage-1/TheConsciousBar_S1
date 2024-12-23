@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "pf-c8ca4013": {
+      "type": "pf-c8ca4013",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "pf-c8ca4013"
+  ]
+}

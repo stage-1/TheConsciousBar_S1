@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "pf-20b8595b": {
+      "type": "pf-20b8595b",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "pf-20b8595b"
+  ]
+}

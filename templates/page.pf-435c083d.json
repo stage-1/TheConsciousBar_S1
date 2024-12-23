@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "pf-435c083d": {
+      "type": "pf-435c083d",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "pf-435c083d"
+  ]
+}

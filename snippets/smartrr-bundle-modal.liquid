@@ -1,0 +1,296 @@
+
+<div data-smartrr-modal-container>
+  <div data-smartrr-modal-container-bg></div>
+  <div data-smartrr-modal-container-loading>
+    <div data-smartrr-modal-container-loading-spinner></div>
+  </div>
+  <div data-smartrr-modal-container-bundle></div>
+</div>
+
+<style>
+
+  body.smartrr-modal-open {
+    overflow: hidden;
+  }
+
+  [data-smartrr-modal-cta] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    background-color: rgb(27, 189, 27);
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  [data-smartrr-modal-container] {
+    display: none;
+
+    --smartrr-z-index: 1000;
+  }
+
+  [data-smartrr-modal-container].smartrr-modal-bundle-loading {
+    display: block;
+  }
+
+  [data-smartrr-modal-container].smartrr-open {
+    display: block;
+  }
+
+  [data-smartrr-modal-container-bg] {
+    display: block !important;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+
+    background-color: rgba(180, 180, 180, 0.5);
+
+    z-index: calc(var(--smartrr-z-index) + 1);
+  }
+
+  [data-smartrr-modal-container-bundle] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    width: 90vw;
+    max-width: 652px;
+    min-height: 200px;
+
+    transform: translate(-50%, -50%);
+    background-color: white;
+
+    border-radius: 8px;
+
+    z-index: calc(var(--smartrr-z-index) + 2);
+
+    overflow-y: auto;
+  }
+
+  [data-smartrr-modal-container-loading] {
+    display: none;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: calc(var(--smartrr-z-index) + 1);
+  }
+
+  [data-smartrr-modal-container].smartrr-open {
+    display: block;
+  }
+
+  [data-smartrr-modal-container].smartrr-modal-bundle-loading [data-smartrr-modal-container-loading] {
+    display: block !important;
+  }
+
+  [data-smartrr-modal-container].smartrr-modal-bundle-loading [data-smartrr-modal-container-bg] {
+    display: block !important;
+  }
+
+  [data-smartrr-modal-container-loading-spinner] {
+    display: block !important;
+
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #2E2E2E;
+    width: 120px;
+    height: 120px;
+    /* Safari */
+    -webkit-animation: smartrr-loading-spin 2s linear infinite;
+    animation: smartrr-loading-spin 2s linear infinite;
+  }
+
+  /* Safari */
+  @-webkit-keyframes smartrr-loading-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes smartrr-loading-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+
+    [data-smartrr-modal-container-bundle]:empty {
+      display: block;
+    }
+
+    [data-smartrr-modal-container-bundle] {
+      width: 100vw;
+      max-height: calc(100vh - 20px);
+      margin-top: 20px;
+      overflow: hidden;
+
+      top: unset;
+      bottom: 0%;
+
+      left: 0;
+      transform: translate(0, 100%);
+
+      transition: transform 0.4s linear;
+    }
+
+    [data-smartrr-modal-container].smartrr-modal-bundle-loaded [data-smartrr-modal-container-bundle] {
+      transform: translate(0, 0%);
+    }
+  }
+</style>
+
+<script data-smartrr-modal-handler>
+
+  function handleSmartrrBundleModal() {
+    var $modalCTAs = document.querySelectorAll('[data-smartrr-modal-cta]');
+
+    /* If there is already a Bundle on the page, then the Modal CTA will scroll to it instead of opening a new one. */
+    var $onPageBundle = document.querySelector('[data-smartrr-bundle-container]');
+    if ($onPageBundle) {
+      $modalCTAs.forEach(function ($modalCTA) {
+        $modalCTA.addEventListener("click", function () {
+          window.scrollTo({ top: $onPageBundle.offsetTop - 30, behavior: 'smooth' });
+        });
+      });
+      return;
+    }
+
+    var $container = document.querySelector('[data-smartrr-modal-container]');
+
+    if (!$container) {
+      console.warn("Modal Container [data-smartrr-modal-container] not found. Exiting.");
+      return;
+    }
+
+    var $bg = $container.querySelector('[data-smartrr-modal-container-bg]');
+    var $bundle = $container.querySelector('[data-smartrr-modal-container-bundle]');
+
+    function openModalContainer() {
+      $container.classList.add('smartrr-open');
+      document.body.classList.add('smartrr-modal-open');
+    }
+    function closeModalContainer() {
+      $container.classList.remove('smartrr-open');
+      document.body.classList.remove('smartrr-modal-open');
+    }
+
+    $bg.addEventListener('click', function () {
+      closeModalContainer();
+    })
+
+    function SmartrrAddScript(arrScript) {
+      arrScript.forEach(function (smartrrScript) {
+        var $script = document.createElement("script");
+        $script.textContent = smartrrScript.textContent;
+
+        document.body.appendChild($script);
+      });
+    }
+
+    $modalCTAs.forEach(function ($modalCTA) {
+      function fetchModal($container, config) {
+        $modalCTAs.forEach(function ($checkModalCTA) {
+          $checkModalCTA.classList.remove("smartrr-active");
+          $modalCTA.classList.add("smartrr-active");
+        });
+
+        $container.classList.remove('smartrr-modal-bundle-loaded');
+        $container.classList.add('smartrr-modal-bundle-loading');
+
+        var fetchedURL = "{{ smartrr_default_page_url }}";
+
+        if (config.chosenURL.length) {
+          fetchedURL = config.chosenURL;
+        }
+
+        fetch(fetchedURL).then(async function (res) {
+          const page = await res.text();
+
+          const $page = document.createElement('div');
+          $page.innerHTML = page;
+
+          const $bundlePageJS = $page.querySelector('[data-smartrr-modal-page-js]');
+          const $pageBundleHTML = $page.querySelector('[data-smartrr-modal-bundle-container]');
+          const $pageBundleMainJS = $page.querySelector('[data-smartrr-modal-bundle-js]');
+
+          $bundle.appendChild($pageBundleHTML);
+
+          SmartrrAddScript([$bundlePageJS, $pageBundleMainJS]);
+
+          GenerateSmartrrBundle(SmartrrBundleInformation, $bundle.querySelector('[data-smartrr-bundle-container]'), config);
+
+          $container.classList.add('smartrr-modal-bundle-loaded');
+          $container.classList.remove('smartrr-modal-bundle-loading');
+          openModalContainer();
+        });
+      }
+
+      $modalCTA.addEventListener('click', function () {
+        var lastUsed = $modalCTA.classList.contains('smartrr-active');
+
+        var config = {
+          chosenPack: "",
+          chosenProducts: [],
+          chosenURL: ""
+        }
+
+        var chosenPackAttribute = $modalCTA.getAttribute('data-smartrr-chosen-pack');
+
+        if (chosenPackAttribute) {
+          config.chosenPack = chosenPackAttribute;
+        }
+
+        var chosenURL = $modalCTA.getAttribute('data-smartrr-bundle-url');
+
+        if (chosenURL) {
+          config.chosenURL = chosenURL;
+        }
+
+        /**
+         * If Modal has been loaded, open the Modal.
+         * If Modal is loading, ignore click. Modal will auto-open once loading is complete.
+         * If either loaded not loading, Modal information has not been retrieved.
+         */
+        if ($container.classList.contains('smartrr-modal-bundle-loaded')) {
+          if (lastUsed) {
+            openModalContainer();
+          } else {
+            fetchModal($container, config);
+          }
+        } else if ($container.classList.contains('smartrr-modal-bundle-loading')) {
+          return;
+        } else {
+          fetchModal($container, config);
+        }
+      });
+    });
+  }
+
+  if (["complete", "loaded"].indexOf(document.readyState) !== -1) {
+    handleSmartrrBundleModal();
+  } else {
+    document.addEventListener("DOMContentLoaded", function () {
+      handleSmartrrBundleModal();
+    });
+  }
+
+</script>

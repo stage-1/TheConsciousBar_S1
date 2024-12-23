@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "pf-fab71976": {
+      "type": "pf-fab71976",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "pf-fab71976"
+  ]
+}

@@ -1,0 +1,1644 @@
+
+{% assign hidden_text = "{{H}}" %}
+
+<script data-smartrr-modal-bundle-js>
+  function GenerateSmartrrBundle(
+    externalBundleInformation,
+    $externalBundleLocation,
+    bundleConfig = {}
+  ) {
+    /**
+     * Contains the HTML source for all SVGs used in the code below.
+     */
+    const SVGList = {
+      clearAllClose: `
+        <svg width="9" height="9" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.0005 13L1.00049 1M13.0005 1L1.00049 13" stroke="#4B4B4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `,
+      headerClose: `
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.0005 13L1.00049 1M13.0005 1L1.00049 13" stroke="#4B4B4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `,
+      packSelectionArrow: `
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3.33333 2.08337L1.25 4.16671L3.33333 6.25004" stroke="black" stroke-width="0.625" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M1.25 4.16663H4.58333C6.88458 4.16663 8.75 6.03204 8.75 8.33329V8.74996" stroke="black" stroke-width="0.625" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `,
+      searchTick: `
+        <svg width="9" height="8" viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.833252 4L3.58325 6.75L8.16658 1.25" stroke="white" stroke-width="0.6875" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `,
+      searchIcon: `
+        <svg data-smartrr-pss-query width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10.5 10.5L8.257 8.253L10.5 10.5ZM9.5 5.25C9.5 6.37717 9.05223 7.45817 8.2552 8.2552C7.45817 9.05223 6.37717 9.5 5.25 9.5C4.12283 9.5 3.04183 9.05223 2.2448 8.2552C1.44777 7.45817 1 6.37717 1 5.25C1 4.12283 1.44777 3.04183 2.2448 2.2448C3.04183 1.44777 4.12283 1 5.25 1C6.37717 1 7.45817 1.44777 8.2552 2.2448C9.05223 3.04183 9.5 4.12283 9.5 5.25V5.25Z" stroke="#4B4B4B" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `,
+      searchFilter: `
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.25 11.0832H5.25M1.75 2.9165H4.08333H1.75ZM12.25 2.9165H6.41667H12.25ZM1.75 6.99984H8.75H1.75ZM12.25 6.99984H11.0833H12.25ZM1.75 11.0832H2.91667H1.75Z" stroke="#202223" stroke-width="0.875" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5.24992 4.08333C5.89425 4.08333 6.41659 3.561 6.41659 2.91667C6.41659 2.27233 5.89425 1.75 5.24992 1.75C4.60559 1.75 4.08325 2.27233 4.08325 2.91667C4.08325 3.561 4.60559 4.08333 5.24992 4.08333Z" stroke="#202223" stroke-width="0.875" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9.91667 8.16683C10.561 8.16683 11.0833 7.64449 11.0833 7.00016C11.0833 6.35583 10.561 5.8335 9.91667 5.8335C9.27233 5.8335 8.75 6.35583 8.75 7.00016C8.75 7.64449 9.27233 8.16683 9.91667 8.16683Z" stroke="#202223" stroke-width="0.875" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4.08341 12.2498C4.72775 12.2498 5.25008 11.7275 5.25008 11.0832C5.25008 10.4388 4.72775 9.9165 4.08341 9.9165C3.43908 9.9165 2.91675 10.4388 2.91675 11.0832C2.91675 11.7275 3.43908 12.2498 4.08341 12.2498Z" stroke="#202223" stroke-width="0.875" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `,
+    };
+
+    /**
+     * Used to decide whether to log the output of the Build a Box JS or not.
+     */
+    bundleConfig.shouldLog = bundleConfig.shouldLog || false;
+
+    /**
+     * Used to decide which Pack is chosen by default at startup
+     */
+
+    bundleConfig.chosenPack = bundleConfig.chosenPack || "";
+
+    /**
+     * Used to decide which products are chosen by default and whether they are fixed or not.
+     * {
+     *    "productId": "string",
+     *    "fixed": "boolean"
+     * }
+     */
+    bundleConfig.chosenProducts = bundleConfig.chosenProducts || [];
+
+    /**
+     * A wrapper around console.log allowing for better control over what is logged.
+     * @param data Variable Arguments that are sent to console.log
+     */
+    function Log(...data) {
+      if (bundleConfig.shouldLog) {
+        console.log(...data);
+      }
+    }
+    /**
+     * Smartrr Helper Class
+     *
+     * Contains functions useful for performing common JS actions
+     * while restricting the scope of those functions
+     */
+    class sh {
+      /**
+       * qs (Query Selector) searches for the first Element
+       * with the specified Query Term.
+       * @param $obj The container being searched
+       * @param term The search term
+       * @returns The HTMLElement that matches the query, or an error.
+       */
+      static qs($obj, term) {
+        var ret = $obj.querySelector(term);
+        if (ret) return ret;
+        throw Error(`Query Selector Failed for "${term}".`);
+      }
+      /**
+       * qsd (Query Selector Datatag) searches for the first Element
+       * that contains the specified Data Attribute and Value.
+       * @param $obj The container being searched
+       * @param term The name of the data attribute
+       * @param value (Optional)The current value of the data attribute
+       * @returns The first matched Element, or an error.
+       */
+      static qsd($obj, term, value = null) {
+        var ret = null;
+        if (value) {
+          ret = $obj.querySelector(`[${term}="${value}"]`);
+          if (ret) return ret;
+          throw Error(`QuerySelector failed for "[${term}="${value}"]".`);
+        } else {
+          ret = $obj.querySelector(`[${term}]`);
+          if (ret) return ret;
+          throw Error(`QuerySelector failed for "[${term}]"`);
+        }
+      }
+      /**
+       * checkqsd (Check Query Selector Datatag) checks for the
+       * datatag but allows the querySelector function to return null.
+       * @param $obj The container being searched
+       * @param term The data attribute
+       * @param value (Optional)Value of the data attribute
+       * @returns The first matched element, if any.
+       */
+      static checkqsd($obj, term, value = null) {
+        var ret = null;
+        if (value) {
+          ret = $obj.querySelector(`[${term}="${value}"]`);
+          return ret;
+        } else {
+          ret = $obj.querySelector(`[${term}]`);
+          return ret;
+        }
+      }
+      /**
+       * qsa (Query Selector All) returns all matched Elements
+       * inside the Container
+       * @param $obj The container being searched
+       * @param term The search term
+       * @returns Array of HTMLElements that matched the search term
+       */
+      static qsa($obj, term) {
+        return Array.from($obj.querySelectorAll(term));
+      }
+      /**
+       * qsad (Query Selector All Datatag) returns a list of HTMLElements
+       * that contain the data attribute with the optionally specified value.
+       * @param $obj The Container being searched
+       * @param term The Data Attribute
+       * @param value The optional Value of the data attribute
+       * @returns Array of HTMLElement that contained the data attribute
+       */
+      static qsad($obj, term, value = null) {
+        if (value) {
+          return Array.from($obj.querySelectorAll(`[${term}="${value}"]`));
+        } else {
+          return Array.from($obj.querySelectorAll(`[${term}]`));
+        }
+      }
+      /**
+       * @param $objOrArr Singular or Array of Elements
+       * @param classToCheck The CSS class to checks
+       * @returns Returns whether all elements provided contain the
+       *          provided CSS class or not.
+       */
+      static containsClass($objOrArr, classToCheck) {
+        if (Array.isArray($objOrArr)) {
+          for (var index = 0; index < $objOrArr.length; index++) {
+            var $obj = $objOrArr[index];
+            if (!$obj.classList.contains(classToCheck)) {
+              return false;
+            }
+          }
+          return true;
+        } else {
+          return $objOrArr.classList.contains(classToCheck);
+        }
+      }
+      /**
+       * Adds/Removes/Toggles the specific CSS class for
+       * all provided Elements
+       * @param $objOrArr Singular or Array of Elements
+       * @param funcToUse CSS editing class to use (add/remove etc)
+       * @param classToUpdate CSS Class to edit
+       */
+      static updateClassList($objOrArr, funcToUse, classToUpdate) {
+        if (!["add", "remove", "toggle"].includes(funcToUse)) {
+          throw Error("ClassList updated only supports Add/Remove/Toggle.");
+        }
+        if (Array.isArray($objOrArr)) {
+          $objOrArr.forEach(function (obj) {
+            obj.classList[funcToUse](classToUpdate);
+          });
+        } else {
+          $objOrArr.classList[funcToUse](classToUpdate);
+        }
+      }
+      /**
+       * Wrapper around updateClassList to specifically add CSS class
+       * @param $objOrArr Singular or Array of Elements
+       * @param classToAdd CSS Class to add
+       */
+      static addClass($objOrArr, classToAdd) {
+        sh.updateClassList($objOrArr, "add", classToAdd);
+      }
+      /**
+       * Wrapper around updateClassList to specifically remove CSS class
+       * @param $objOrArr Singular or Array of Elements
+       * @param classToRemove CSS Class to remove
+       */
+      static removeClass($objOrArr, classToRemove) {
+        sh.updateClassList($objOrArr, "remove", classToRemove);
+      }
+      /**
+       * Wrapper around updateClassList to hide elements
+       * @param $objOrArr Singular or Array of Elements to hide
+       */
+      static hide($objOrArr) {
+        sh.addClass($objOrArr, ct.HIDE);
+      }
+      /**
+       * Wrapper around updateClassList to show elements
+       * @param $objOrArr Singular or Array of Elements to show
+       */
+      static show($objOrArr) {
+        sh.removeClass($objOrArr, ct.HIDE);
+      }
+      /**
+       * Removes CSS from provided Elements then adds it to a
+       * different list of provided Elements.
+       * @param $objOrArrRemoval Element(s) to remove
+       * @param $objOrArrAddition Element(s) to add
+       * @param classToToggle CSS class to remove then add
+       */
+      static removeThenAddClass(
+        $objOrArrRemoval,
+        $objOrArrAddition,
+        classToToggle
+      ) {
+        sh.removeClass($objOrArrRemoval, classToToggle);
+        sh.addClass($objOrArrAddition, classToToggle);
+      }
+      /**
+       * Simple clone of JSON data of any Object
+       * @param obj Object to clone
+       * @returns Cloned Object
+       */
+      static cloneData(obj) {
+        return JSON.parse(JSON.stringify(obj));
+      }
+      /**
+       * Wrapper around addEventListener that support Arrays of Elements
+       * @param $objOrArr Element(s)
+       * @param event Event to detect
+       * @param func Callback function
+       */
+      static eventListener($objOrArr, event, func) {
+        if (Array.isArray($objOrArr)) {
+          $objOrArr.forEach(function (obj) {
+            obj.addEventListener(event, func);
+          });
+        } else {
+          $objOrArr.addEventListener(event, func);
+        }
+      }
+      /**
+       * Wrapper around eventListener to specifically handle "click"
+       * @param $objOrArr Element(s)
+       * @param func Callback function
+       */
+      static click($objOrArr, func) {
+        sh.eventListener($objOrArr, "click", func);
+      }
+      /**
+       * Wrapper around eventListener to specifically handle "change"
+       * @param $objOrArr Element(s)
+       * @param func Callback function
+       */
+      static change($objOrArr, func) {
+        sh.eventListener($objOrArr, "change", func);
+      }
+      /**
+       * Add a String as HTML inside a Container at the end.
+       * @param element Container Element
+       * @param s String to add as HTML
+       */
+      static addHTML(element, s) {
+        element.insertAdjacentHTML("beforeend", s);
+      }
+      /**
+       * Comparison tools for IDs and such that may be in
+       * String or Number format. Example, 1234 or "1234".
+       * @param a String or Number
+       * @param b String or Number
+       * @returns Checks whether they're equal as strings
+       */
+      static seq(a, b) {
+        return String(a) === String(b);
+      }
+      /**
+       * Returns current value of a data attribute.
+       * @param $obj Element
+       * @param attr Data Attribute
+       * @returns Current Value of the Data Attribute
+       */
+      static getAttribute($obj, attr) {
+        return $obj.getAttribute(attr);
+      }
+      /**
+       * Returns a map of all current values of a data attribute
+       * on all provided elements. Does not check whether Elements
+       * contain the data attribute or not.
+       * @param $objOrArr Element(s)
+       * @param attr Data Attribute
+       * @returns Array with all current values
+       */
+      static getAttributes($objOrArr, attr) {
+        return $objOrArr.map(function ($obj) {
+          return $obj.getAttribute(attr);
+        });
+      }
+    }
+    /**
+     * Class Tags
+     */
+    const ct = {
+      HIDE: "smartrr-hide",
+      ACTIVE: "smartrr-active",
+      OPEN: "smartrr-open",
+      CLOSE: "smartrr-close",
+      EMPTY: "smartrr-empty",
+      MODALOPEN: "smartrr-modal-open",
+    };
+    /**
+     * Query Tags
+     */
+    const qt = {
+      BUNDLECONTAINERTAG: "data-smartrr-bundle-container",
+      BUNDLEHEADERTAG: "data-smartrr-bundle-header",
+      BUNDLEHEADER: {
+        LABELTAG: "data-smartrr-bundle-header-label",
+        CLOSETAG: "data-smartrr-bundle-header-close",
+      },
+      PACKSELECTIONTAG: "data-smartrr-bundle-pack-selection",
+      PACKSELECTION: {
+        HEADERTAG: "data-smartrr-bundle-pack-selection-header",
+        PACKCONTAINERTAG: "data-smartrr-bundle-pack-container",
+        PACKTAG: "data-smartrr-bundle-pack",
+        PACK: {
+          CTATAG: "data-smartrr-bundle-pack-cta",
+          NAMETAG: "data-smartrr-bundle-pack-name",
+          DESCRIPTIONTAG: "data-smartrr-bundle-pack-description",
+        },
+        SELECTIONCHANGETAG: "data-smartrr-bundle-pack-selection-change",
+      },
+      PRODUCTSELECTIONTAG: "data-smartrr-product-selection",
+      PRODUCTSELECTION: {
+        HEADERTAG: "data-smartrr-product-selection-header",
+        HEADER: {
+          FILTERTAG: "data-smartrr-psh-filter",
+          FILTER: {
+            LABELTAG: "data-smartrr-psh-filter-label",
+            TAGSLISTTAG: "data-smartrr-psh-filter-tags",
+            TAGSLIST: {
+              INDIVIDUALTAG: "data-smartrr-psh-filter-tag",
+            },
+          },
+          SEARCH: {
+            CONTAINERTAG: "data-smartrr-product-selection-search-container",
+            SEARCHINPUTTAG: "data-smartrr-product-selection-search",
+            MOBILECTATAG: "data-smartrr-product-search-mobile-cta",
+          },
+        },
+        SELECTIONTAG: "data-smartrr-product-selection-list",
+        SELECTION: {
+          CARDTAG: "data-smartrr-psl-card",
+          CARDPRODUCTTAG: "data-smartrr-psl-card-product",
+          EMPTYSEARCH: "data-smartrr-psl-empty",
+        },
+      },
+      PRODUCTCARD: {
+        IMAGETAG: "data-smartrr-psl-card-image",
+        IMAGEDEFAULTTAG: "data-smartrr-image-default",
+        CTATAG: "data-smartrr-psl-card-cta",
+        CTA: {
+          MINUSTAG: "data-smartrr-plsc-cta-minus",
+          VALUETAG: "data-smartrr-plsc-cta-value",
+          PLUSTAG: "data-smartrr-plsc-cta-plus",
+          ATCTAG: "data-smartrr-plsc-cta-atc",
+        },
+        NAMETAG: "data-smartrr-psl-card-name",
+      },
+      CARTINFOTTAG: "data-smartrr-cart-info",
+      CARTINFO: {
+        BOXSELECTIONTAG: "data-smartrr-box-selection",
+        BOXSELECTION: {
+          PROGRESSBARTAG: "data-smartrr-box-selection-progress-bar",
+          PROGRESSBAR: {
+            BARTAG: "data-smartrr-bspb-bar",
+            FULLTAG: "data-smartrr-bspb-full",
+          },
+          CARDLISTTAG: "data-smartrr-box-selection-cards",
+          BOXCLEARTAG: "data-smartrr-box-clear",
+        },
+        PLANSELECTIONTAG: "data-smartrr-selling-plan-selection",
+        PLANSELECTION: {
+          HEADERTAG: "data-smartrr-ssp-header",
+          PLANLISTTAG: "data-smartrr-ssp-plans",
+          PLANLIST: {
+            PLANTAG: "data-smartrr-ssp-plan",
+          },
+        },
+        CONFIRMATIONTAG: "data-smartrr-confirmation-container",
+        CONFIRMATION: {
+          CTATAG: "data-smartrr-confirmation-cta",
+          CTA: {
+            TEXTTAG: "data-smartrr-ccta-text",
+            PRICETAG: "data-smartrr-ccta-price"
+          }
+        },
+      },
+      PRICEINFO: {
+        PRICETAG: "data-smartrr-bundle-price-amount"
+      }
+    };
+    /**
+     * Locale Tags
+     */
+    class LocaleTags {}
+    class BundleLocale {
+      constructor() {
+        this.default = {
+          bundleHeader: "Build your box",
+          packSelectionHeader: "Select size",
+          packSelectedHeader: "Your size",
+          packSelectionSizeChange: "Select different size",
+          productSelectionFilterLabel: function (n) {
+            return `Add ${n} items`;
+          },
+          productAddToCart: "Add",
+          productSearchPlaceholder: "Search",
+          productEmptySearch: "No Products found",
+          productOutOfStock: "Out of Stock",
+          cartBoxFull: "Box full!",
+          cartClear: "Clear all",
+          cartFrequency: "How often?",
+          cartOneTime: "One time purchase",
+          cartConfirm: "Confirm",
+        };
+      }
+    }
+    const smartrrLocale = new BundleLocale();
+    /**
+     * Returns the locale tags that match the current language
+     * specified in Shopify. If information about the locale
+     * isn't present, then it returns the default Locale.
+     * @returns The Locale Tags matching the Shopify Language
+     */
+    function intl() {
+      /* @ts-ignore: PDP contains Shopify Object */
+      var locale = typeof Shopify !== "undefined" ? Shopify.locale : "default";
+      /* @ts-ignore: smartrrLocale always defined */
+      if (typeof smartrrLocale[locale] !== "undefined") {
+        /* @ts-ignore: smartrrLocale always defined */
+        return smartrrLocale[locale];
+      }
+      return smartrrLocale.default;
+    }
+    class SearchFilterSearch {
+      constructor() {
+        this.displayTerm = "";
+        this.searchTag = "";
+      }
+    }
+    class SearchFilter {
+      constructor() {
+        this.name = "";
+        this.searches = [];
+      }
+    }
+    class SellingPlanAllocation {
+      constructor() {
+        this.compare_at_price = 0;
+        this.per_delivery_price = 0;
+        this.price = 0;
+        this.price_adjustments = [];
+        this.selling_plan_group_id = "";
+        this.selling_plan_id = 0;
+      }
+    }
+    class Variant {
+      constructor() {
+        this.available = false;
+        this.id = 0;
+        this.title = "";
+        this.price = 0;
+        this.selling_plan_allocations = [];
+      }
+    }
+    class SellingPlanOption {
+      constructor() {
+        this.name = "";
+        this.position = 0;
+        this.value = "";
+      }
+    }
+    class SellingPlan {
+      constructor() {
+        this.id = 0;
+        this.name = "";
+        this.options = [];
+      }
+    }
+    class SellingPlanGroupOption {
+      constructor() {
+        this.name = "";
+        this.position = 0;
+        this.values = [];
+      }
+    }
+    class SellingPlanGroup {
+      constructor() {
+        this.app_id = "";
+        this.id = "";
+        this.name = "";
+        this.options = [];
+        this.selling_plans = [];
+      }
+      /**
+       * Returns the selling plan information attached to the
+       * specified Selling Plan
+       * @param handler The Main Build a Box Object
+       * @param sellingPlanId Selling Plan ID
+       * @returns Information about the selling plan
+       */
+      static GetSellingPlan(handler, sellingPlanId) {
+        if (handler.bundle.group) {
+          return handler.bundle.group.selling_plans.find(function (plan) {
+            return sh.seq(plan.id, sellingPlanId);
+          });
+        }
+        return null;
+      }
+    }
+    class ProductRef {}
+    class Product {
+      constructor() {
+        this.available = false;
+        this.id = 0;
+        this.title = "";
+        this.handle = "";
+        this.tags = [];
+        this.variants = [];
+        this.selling_plan_groups = [];
+      }
+      /**
+       * Returns the first variant found whose title contains the search term provided.
+       * @param product Shopify Product
+       * @param variantSearch Search term
+       * @returns Variant
+       */
+      static GetVariant(product, variantSearch) {
+        if (variantSearch === "") {
+          return product.variants[0];
+        }
+        var ret = product.variants.find(function (variant) {
+          return variant.title
+            .toLowerCase()
+            .includes(variantSearch.toLowerCase());
+        });
+        if (ret) {
+          return ret;
+        } else {
+          Log(`Did not find variant ${variantSearch} for ${product.title}`);
+          return product.variants[0];
+        }
+      }
+    }
+    class Collection {
+      constructor() {
+        this.name = "";
+        this.products = [];
+      }
+      /**
+       * Finds the specified Product in the Pack's collection or returns an error.
+       * @param pack The relevant Pack
+       * @param productId Shopify Product ID
+       * @returns Product found or Error
+       */
+      static GetProduct(pack, productId) {
+        if (typeof pack.collection !== "undefined") {
+          var ret = pack.collection.products.find(function (product) {
+            return sh.seq(product.id, productId);
+          });
+          if (ret) {
+            return ret;
+          } else {
+            throw Error(
+              `Product ${productId} not in collection ${pack.collection.name}`
+            );
+          }
+        }
+        throw Error(`Pack ${pack.name} does not contain a collection`);
+      }
+
+      static GetCollectionVariant(pack, variantId) {
+        let retVariant = {};
+        if(typeof pack.collection !== "undefined") {
+          for (const product of pack.collection.products) {
+            product.variants.forEach(variant => {
+              if(variant.id === variantId) {
+                retVariant = variant;
+              }
+            })
+          }
+        }
+
+        if(retVariant !== {}) {
+          return retVariant;
+        } else {
+          throw Error(`Variant ${variantId} not in collection ${pack.collection.name}`);
+        }
+      }
+    }
+    class Pack {
+      constructor() {
+        /** Name of the Pack. Example, 4-Pack. */
+        this.name = "";
+        this.description = "";
+        this.alert = "";
+        this.collectionString = "";
+        this.minProducts = 0;
+        this.maxProducts = 0;
+        this.variantSelection = "";
+        this.searchFilterString = "";
+        this.buyWithVariant = 0;
+      }
+      /**
+       * Returns the requested Pack or an Error if not found.
+       * @param packs List of all Packs
+       * @param name Search term
+       * @returns Pack or Error
+       */
+      static GetPack(packs, name) {
+        var ret = packs.find(function (pack) {
+          return sh.seq(pack.name, name);
+        });
+        if (ret) {
+          return ret;
+        }
+        throw Error(`Did not find Pack: ${name}.`);
+      }
+      /**
+       * Checks whether the Pack is present or not.
+       * @param packs List of all Packs
+       * @param name Search term
+       * @returns Has Pack
+       */
+      static HasPack(packs, name) {
+        var ret = packs.find(function (pack) {
+          return sh.seq(pack.name, name);
+        });
+        return ret? true: false;
+      }
+    }
+    class Bundle {
+      constructor() {
+        this.name = "";
+        this.slug = "";
+        this.searchFilters = [];
+        this.packs = [];
+        this.collections = [];
+      }
+    }
+    class LineItem {
+      constructor() {
+        this.quantity = 0;
+      }
+    }
+    class Cart {
+      constructor() {
+        this.currentNum = 0;
+        this.lineItems = {};
+        this.cartRefs = [];
+      }
+      /**
+       * Wrapper to perform all CSS changes required to show the Cart.
+       * @param handler Handler
+       */
+      static ShowCart(handler) {
+        var $cartInfo = sh.qsd(handler.$loc, qt.CARTINFOTTAG);
+        var $box = sh.qsd($cartInfo, qt.CARTINFO.BOXSELECTIONTAG);
+        sh.addClass($box, ct.ACTIVE);
+      }
+      /**
+       * Clears all items from the Cart and updates Product Selection.
+       * @param handler Handler
+       */
+      static ClearCart(handler) {
+        handler.cart.lineItems = {};
+        handler.cart.currentNum = 0;
+        UpdateProductSelection(handler);
+      }
+      /**
+       * Adds the relevant Variant of the specified ProductID
+       * to the cart if there is still room in the Cart.
+       * @param handler Handler
+       * @param productId Shopify Product ID
+       */
+      static AddLineItem(handler, variantId, productId) {
+        const c = handler.cart;
+        if (c.currentNum < c.pack.maxProducts) {
+          const lineItem = c.lineItems[variantId];
+          if (typeof lineItem === "undefined") {
+            const newProduct = Collection.GetProduct(c.pack, productId);
+            const newVariant = Collection.GetCollectionVariant(c.pack, variantId);
+            let imageString = "";
+            if(newVariant && newVariant.image) {
+              imageString = newVariant.image;
+            } else if(newProduct && newProduct.image) {
+              imageString = newProduct.image;
+            }
+            c.lineItems[variantId] = {
+              product: newProduct,
+              variant: newVariant,
+              quantity: 1,
+              image: imageString,
+            };
+          } else {
+            lineItem.quantity += 1;
+          }
+          c.currentNum += 1;
+        }
+        Cart.ShowCart(handler);
+        UpdateProductSelection(handler);
+      }
+      /**
+       * Removes 1 from the Line Item corresponding to the
+       * specified Shopify Product or throws an error if the
+       * Product was not present in the Cart.
+       * @param handler Handler
+       * @param productId Shopify Product ID
+       */
+      static RemoveLineItem(handler, variantId) {
+        var c = handler.cart;
+        const lineItem = c.lineItems[variantId];
+        if (typeof lineItem === "undefined") {
+          throw Error(`Remove Line Item ${variantId} that does not exist.`);
+        }
+        c.currentNum -= 1;
+        if (lineItem.quantity === 1) {
+          delete c.lineItems[variantId];
+        } else {
+          lineItem.quantity -= 1;
+        }
+        Cart.ShowCart(handler);
+        UpdateProductSelection(handler);
+      }
+    }
+    class Handler {
+      constructor(externalBundle, cart, $bundle) {
+        this.bundle = JSON.parse(JSON.stringify(externalBundle));
+        this.$loc = $bundle;
+        this.cart = cart;
+      }
+    }
+    /**
+     * Sets up the dynamic Cart and Bundle information.
+     * Each Pack retrieves the relevant Collection and
+     * Search Filter from the Bundle.
+     * @param handler Handler
+     */
+    function InitializeCart(handler) {
+      var b = handler.bundle;
+      b.packs.forEach(function (pack) {
+        pack.collection = b.collections.find(function (collection) {
+          return sh.seq(collection.name, pack.collectionString);
+        });
+        pack.searchFilter = b.searchFilters.find(function (filter) {
+          return sh.seq(filter.name, pack.searchFilterString);
+        });
+      });
+    }
+    /**
+     * Initialize the Header of the Build a Box.
+     * Setup the Close button.
+     * @param handler Handler
+     */
+    function InitializeHeader(handler) {
+      const headerHTMLString = `
+        <div data-smartrr-bundle-header>
+          <div data-smartrr-bundle-header-label>
+            <span>${intl().bundleHeader}</span>
+          </div>
+          <div data-smartrr-bundle-header-close>
+            ${SVGList.headerClose}
+          </div>
+        </div>
+      `;
+      sh.addHTML(handler.$loc, headerHTMLString);
+      const $header = sh.qsd(handler.$loc, qt.BUNDLEHEADERTAG);
+      const $close = sh.qsd($header, qt.BUNDLEHEADER.CLOSETAG);
+      const $modalContainer = document.querySelector(
+        "[data-smartrr-modal-container]"
+      );
+      sh.click($close, function () {
+        if ($modalContainer) {
+          sh.removeClass($modalContainer, ct.OPEN);
+          sh.removeClass(document.body, ct.MODALOPEN);
+        }
+      });
+    }
+    function SelectPack(handler, selectedPackName) {
+      /**
+       * Hide all Packs except selected Pack
+       * Hide Pack descriptions
+       * Inform Cart about Selected Pack
+       * Initialize Product Selection
+       */
+      var b = handler.bundle;
+      var $packSelection = sh.qsd(handler.$loc, qt.PACKSELECTIONTAG);
+      var $packSelectionHeaderText = sh.qs(
+        $packSelection,
+        `[${qt.PACKSELECTION.HEADERTAG}] span`
+      );
+      var $packContainer = sh.qsd(
+        $packSelection,
+        qt.PACKSELECTION.PACKCONTAINERTAG
+      );
+      var $packlist = sh.qsad($packContainer, qt.PACKSELECTION.PACKTAG);
+
+      $packlist.forEach(function ($pack) {
+        var $packName = sh.qsd($pack, qt.PACKSELECTION.PACK.NAMETAG);
+        var $packDescription = sh.qsd(
+          $pack,
+          qt.PACKSELECTION.PACK.DESCRIPTIONTAG
+        );
+        var packName = atob(sh.getAttribute($pack, qt.PACKSELECTION.PACKTAG));
+        if (sh.seq(packName, selectedPackName)) {
+          sh.hide($packlist);
+          sh.show($pack);
+          sh.addClass($pack, ct.ACTIVE);
+          sh.hide($packDescription);
+          $packSelectionHeaderText.textContent = intl().packSelectedHeader;
+          handler.cart.pack = Pack.GetPack(b.packs, packName);
+          Log("Pack Selected ", handler.cart.pack);
+          InitializeProductSelection(handler);
+        }
+      });
+    }
+    /**
+     * Setup the Pack Selection
+     * Generate All the Packs
+     * Handle Selecting a Pack
+     * Handle Resetting the selected Pack
+     * @param handler handler
+     */
+    function InitializePackSelection(handler) {
+      function VerifyPackAvailability() {
+        var b = handler.bundle;
+        b.packs.forEach(function (pack) {
+          var variantId = pack.buyWithVariant;
+          b.bundleProduct.variants.forEach(function (variant) {
+            if (sh.seq(variant.id, variantId)) {
+              pack.variantAvailabe = variant.available;
+            }
+          })
+        })
+      }
+      function GeneratePacks($packContainer) {
+        VerifyPackAvailability();
+        var b = handler.bundle;
+        b.packs.forEach(function (pack) {
+          var packString = pack.variantAvailabe? pack.alert: intl().productOutOfStock;
+          var packCTAString =
+            packString && packString.length > 0 ?
+              `
+                <div data-smartrr-bundle-pack-cta>
+                  <span>${packString}</span>
+                </div>
+              `: `
+                <div data-smartrr-bundle-pack-no-cta>
+                  <span>${packString}</span>
+                </div>
+              `;
+          var packString = `
+            <div data-smartrr-bundle-pack="${btoa(pack.name)}" class="${ct.OPEN}">
+              ${packCTAString}
+              <div data-smartrr-bundle-pack-name class="${pack.variantAvailabe? "": ct.EMPTY}">
+                <span>${pack.name}</span>
+              </div>
+              <div data-smartrr-bundle-pack-description>
+                <span>${pack.description}</span>
+              </div>
+            </div>
+          `;
+          sh.addHTML($packContainer, packString);
+        });
+        sh.addHTML(
+          $packContainer,
+          `
+          <div data-smartrr-bundle-pack-selection-change>
+            <span>
+              ${SVGList.packSelectionArrow}
+              <span>${intl().packSelectionSizeChange}</span>
+            </span>
+          </div>
+        `
+        );
+      }
+      var packSelectionString = `
+        <div data-smartrr-bundle-pack-selection>
+          <div data-smartrr-bundle-pack-selection-header>
+            <span>${intl().packSelectionHeader}</span>
+          </div>
+          <div data-smartrr-bundle-pack-container>
+          </div>
+        </div>
+      `;
+      sh.addHTML(handler.$loc, packSelectionString);
+      var $packSelection = sh.qsd(handler.$loc, qt.PACKSELECTIONTAG);
+      var $packSelectionHeaderText = sh.qs(
+        $packSelection,
+        `[${qt.PACKSELECTION.HEADERTAG}] span`
+      );
+      var $packContainer = sh.qsd(
+        $packSelection,
+        qt.PACKSELECTION.PACKCONTAINERTAG
+      );
+      GeneratePacks($packContainer);
+      var $packSelectionChange = sh.qs(
+        $packContainer,
+        `[${qt.PACKSELECTION.SELECTIONCHANGETAG}] span`
+      );
+      var $packlist = sh.qsad($packContainer, qt.PACKSELECTION.PACKTAG);
+      $packlist.forEach(function ($pack) {
+        var $packName = sh.qsd($pack, qt.PACKSELECTION.PACK.NAMETAG);
+        var $packDescription = sh.qsd(
+          $pack,
+          qt.PACKSELECTION.PACK.DESCRIPTIONTAG
+        );
+        var packName = atob(sh.getAttribute($pack, qt.PACKSELECTION.PACKTAG));
+        var currentPack = Pack.GetPack(handler.bundle.packs, packName);
+        if (currentPack.variantAvailabe) {
+          sh.click($packName, function () {
+            var b = handler.bundle;
+            if (!sh.containsClass($pack, ct.ACTIVE)) {
+              SelectPack(handler, packName);
+            }
+          });
+        }
+      });
+      /**
+       * On Click 'Select Different Bundle':
+       *  Reset the Head text
+       *  Re-Initialize Bundle
+       */
+      sh.click($packSelectionChange, function () {
+        $packSelectionHeaderText.innerText = intl().packSelectionHeader;
+        bundleConfig.chosenPack = "";
+        bundleConfig.chosenProducts = [];
+        reInitializeBundle();
+      });
+
+      if (bundleConfig.chosenPack !== "" &&
+          Pack.HasPack(handler.bundle.packs, atob(bundleConfig.chosenPack))) {
+        var chosenPack = Pack.GetPack(handler.bundle.packs, atob(bundleConfig.chosenPack));
+        if (chosenPack.variantAvailabe) {
+          SelectPack(handler, atob(bundleConfig.chosenPack));
+        }
+      }
+    }
+    /**
+     * Updates a product when the Cart is updated.
+     * @param r HTMLElements for a Shopify Product
+     * @param c Bundle Cart
+     * @param p Bundle Pack
+     * @param lineItem Line Item Information
+     */
+    function UpdateProduct(r, c, p, lineItem) {
+      if (typeof lineItem === "undefined") {
+        /**
+         * If Product is not in the Cart,
+         *  Show the Add to Cart button
+         *  Reset the Quantity display
+         */
+        sh.addClass(r.$atc, ct.ACTIVE);
+        r.$value.setAttribute(qt.PRODUCTCARD.CTA.VALUETAG, String(0));
+        r.$value.innerHTML = String(0);
+        sh.removeClass(r.$minus, ct.ACTIVE);
+        sh.addClass(r.$plus, ct.ACTIVE);
+      } else {
+        /**
+         * If Product is in the Cart,
+         *  Hide the Add to Cart button
+         *  Set the current Quantity Value
+         *  Make the Quantity Addition inactive if Cart if full.
+         */
+        sh.removeClass(r.$atc, ct.ACTIVE);
+        r.$value.setAttribute(
+          qt.PRODUCTCARD.CTA.VALUETAG,
+          String(lineItem.quantity)
+        );
+        r.$value.innerHTML = String(lineItem.quantity);
+        sh.addClass(r.$minus, ct.ACTIVE);
+        if (sh.seq(c.currentNum, p.maxProducts)) {
+          sh.removeClass(r.$plus, ct.ACTIVE);
+        } else {
+          sh.addClass(r.$plus, ct.ACTIVE);
+        }
+      }
+    }
+    /**
+     * Update the Product Selection Shown any time the Cart
+     * is updated.
+     * @param handler Handler
+     */
+    function UpdateProductSelection(handler) {
+      /**
+       * Update the products in the Product Selection
+       */
+      const p = handler.cart.pack;
+      const c = handler.cart;
+      p.collection.products.forEach(function (product) {
+        for (const variant of product.variants) {
+          const lineItem = c.lineItems[variant.id];
+          UpdateProduct(variant.refs, c, p, lineItem);
+        }
+      });
+      /**
+       * Update Cart and the Empty Box Products.
+       * :not(ct.ACTIVE) === The Card is hidden
+       * :not(ct.EMPTY) === The Card is being used by a line item
+       */
+      var $cartInfo = sh.qsd(handler.$loc, qt.CARTINFOTTAG);
+      var productIDs = Object.keys(c.lineItems);
+      var activeCardsRemaining = p.maxProducts;
+      c.cartRefs.forEach(function (ref, index) {
+        sh.addClass(ref.$form, ct.ACTIVE);
+        var productId = productIDs[index];
+        if (productId) {
+          var lineItem = c.lineItems[productId];
+          sh.removeClass(ref.$form, ct.EMPTY);
+          activeCardsRemaining -= lineItem.quantity;
+          ref.$form.setAttribute(
+            qt.PRODUCTSELECTION.SELECTION.CARDTAG,
+            String(lineItem.variant.id)
+          );
+          ref.$form.setAttribute(
+            qt.PRODUCTSELECTION.SELECTION.CARDPRODUCTTAG,
+            String(lineItem.product.id)
+          );
+          let imageString = "";
+          /** If variant image, set variant image, else set product image */
+          if(lineItem.variant && lineItem.variant.image) {
+            imageString = lineItem.variant.image;
+          } else if(lineItem.product && lineItem.product.image) {
+            imageString = lineItem.product.image;
+          } 
+          ref.$image.src = imageString;
+          let titleString = "";
+          if(lineItem.variant && lineItem.variant.title !== "Default Title") {
+            titleString = lineItem.variant ? `${lineItem.product.title} - ${lineItem.variant.title}` : "";
+          } else {
+            titleString = lineItem.variant ? lineItem.product.title : "";
+          }
+          ref.$title.textContent = titleString;
+          UpdateProduct(ref, c, p, lineItem);
+        } else {
+          if (activeCardsRemaining <= 0) {
+            sh.removeClass(ref.$form, ct.ACTIVE);
+          }
+          sh.addClass(ref.$form, ct.EMPTY);
+          activeCardsRemaining -= 1;
+          ref.$form.setAttribute(qt.PRODUCTSELECTION.SELECTION.CARDTAG, "");
+          ref.$image.src = sh.getAttribute(
+            ref.$image,
+            qt.PRODUCTCARD.IMAGEDEFAULTTAG
+          );
+        }
+      });
+      /**
+       * Hide Clear All if Cart is empty
+       */
+      var $clearAll = sh.qsd($cartInfo, qt.CARTINFO.BOXSELECTION.BOXCLEARTAG);
+      if (c.currentNum === 0) {
+        sh.addClass($clearAll, ct.HIDE);
+      } else {
+        sh.removeClass($clearAll, ct.HIDE);
+      }
+      /**
+       * Update the Progress Bar
+       */
+      var $progress = sh.qsd($cartInfo, qt.CARTINFO.BOXSELECTION.PROGRESSBARTAG);
+      var $span = sh.qsd($progress, qt.CARTINFO.BOXSELECTION.PROGRESSBAR.BARTAG);
+      $span.style.left = `${-100 + (c.currentNum / c.pack.maxProducts) * 100}%`;
+      if (sh.seq(c.currentNum, c.pack.maxProducts)) {
+        sh.addClass($progress, ct.ACTIVE);
+      } else {
+        sh.removeClass($progress, ct.ACTIVE);
+      }
+      /**
+       * Check if the User can Confirm their purchase
+       */
+      CanConfirm(handler);
+    }
+    /**
+     * Creates a Product Card for a Variant, adds functionality and provides DOM Reference.
+     * @param handler Handler
+     * @param $productList Container to insert Product Card
+     * @param refs DOM references to the Card
+     * @param variant Shopify Variant
+     * @param product Shopify Product
+     */
+    function GenerateVariant(handler, $productList, refs, variant, product) {
+      const productIDString = product ? product.id : "";
+      const variantIDString = variant ? variant.id : "";
+      const classesString = `${ct.ACTIVE} ${variant ? "" : ct.EMPTY}`;
+      const imageDefault =
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+      let imageString = "";
+      /** If variant image, set variant image, else set product image */
+      if(variant && variant.image) {
+        imageString = variant.image;
+      } else if(product && product.image) {
+        imageString = product.image;
+      }       
+      let titleString = "";
+      if(variant && variant.title !== "Default Title") {
+        titleString = variant ? `${product.title} - ${variant.title}` : "";
+      } else {
+        titleString = variant ? `${product.title}` : "";
+      }
+      const variantString = `
+        <div data-smartrr-psl-card="${variantIDString}" data-smartrr-psl-card-product="${productIDString}" class="${classesString}">
+          <div data-smartrr-psl-card-image>
+            <a href="${variant ? variant.url: ""}" target="_blank">
+              <img width="" height="" data-smartrr-image-default="${imageDefault}" src="${imageString}" loading="lazy"/>
+            </a>
+          </div>
+          <div data-smartrr-psl-card-cta>
+            <div data-smartrr-plsc-cta-minus><span>-</span></div>
+            <div data-smartrr-plsc-cta-value="?1?">?1?</div>
+            <div data-smartrr-plsc-cta-plus><span>+</span></div>
+            <div data-smartrr-plsc-cta-atc class="${ct.ACTIVE}">
+              <span>${intl().productAddToCart}</span>
+            </div>
+          </div>
+          <div data-smartrr-psl-card-name><span>${titleString}</span></div>
+        </div>
+      `;
+
+      sh.addHTML($productList, variantString);
+      refs.$form = sh.qs(
+        $productList,
+        `[${qt.PRODUCTSELECTION.SELECTION.CARDTAG}]:last-child`
+      );
+      const $form = refs.$form;
+      /**
+       * Retrieve all Product DOM References
+       */
+       refs.$plus = sh.qsd($form, qt.PRODUCTCARD.CTA.PLUSTAG);
+       refs.$minus = sh.qsd($form, qt.PRODUCTCARD.CTA.MINUSTAG);
+       refs.$value = sh.qsd($form, qt.PRODUCTCARD.CTA.VALUETAG);
+       refs.$atc = sh.qsd($form, qt.PRODUCTCARD.CTA.ATCTAG);
+       refs.$title = sh.qs($form, `[${qt.PRODUCTCARD.NAMETAG}] span`);
+       refs.$image = sh.qs($form, `[${qt.PRODUCTCARD.IMAGETAG}] img`);
+
+       /**
+       * Handle Click Events for Adding/Removing Product from the Cart
+       */
+      sh.click(refs.$atc, function () {
+        const variantId = sh.getAttribute(
+          refs.$form,
+          qt.PRODUCTSELECTION.SELECTION.CARDTAG
+        );
+        const productId = sh.getAttribute(
+          refs.$form,
+          qt.PRODUCTSELECTION.SELECTION.CARDPRODUCTTAG
+        );
+        Cart.AddLineItem(handler, Number(variantId), productId);
+      });
+      sh.click(refs.$plus, function () {
+        const variantId = sh.getAttribute(
+          refs.$form,
+          qt.PRODUCTSELECTION.SELECTION.CARDTAG
+        );
+        const productId = sh.getAttribute(
+          refs.$form,
+          qt.PRODUCTSELECTION.SELECTION.CARDPRODUCTTAG
+        );
+        Cart.AddLineItem(handler, Number(variantId), productId);
+      });
+      sh.click(refs.$minus, function () {
+        const variantId = sh.getAttribute(
+          refs.$form,
+          qt.PRODUCTSELECTION.SELECTION.CARDTAG
+        );
+        const productId = sh.getAttribute(
+          refs.$form,
+          qt.PRODUCTSELECTION.SELECTION.CARDPRODUCTTAG
+        );
+        Cart.RemoveLineItem(handler, Number(variantId), productId);
+      });
+    }
+    /**
+     * Initialize the Product Selection Section
+     * @param handler Handler
+     */
+    function InitializeProductSelection(handler) {
+      var p = handler.cart.pack;
+      var c = handler.cart;
+      /**
+       * Generate the search terms
+       * @returns HTML String
+       */
+      function GenerateSearchTags() {
+        var tagString = "";
+        p.searchFilter.searches.forEach(function (search) {
+          tagString += `<div data-smartrr-psh-filter-tag="${btoa(
+            search.searchTag
+          )}">
+            <div>
+              ${SVGList.searchTick}
+            </div>
+            <span>${search.displayTerm}</span>
+          </div>`;
+        });
+        return tagString;
+      }
+      function GenerateProducts($productList) {
+        p.collection.products.forEach(function (product) {
+          for (const variant of product.variants) {
+            variant.refs = new ProductRef();
+            GenerateVariant(handler, $productList, variant.refs, variant, product);
+          }
+        });
+      }
+      const productSelectionString = `
+        <div data-smartrr-product-selection>
+          <div data-smartrr-product-selection-header>
+            <div data-smartrr-psh-filter>
+              <div data-smartrr-psh-filter-label><span>${intl().productSelectionFilterLabel(
+                p.maxProducts - c.currentNum
+              )}</span></div>
+              <div data-smartrr-psh-filter-tags>
+                <div data-smartrr-psh-filter-icon>
+                  ${SVGList.searchFilter}
+                </div>
+                ${GenerateSearchTags()}
+              </div>
+            </div>
+
+            <div data-smartrr-product-selection-search-container>
+              <div data-smartrr-product-selection-search>
+                <input placeholder="${intl().productSearchPlaceholder}">
+                ${SVGList.searchIcon}
+              </div>
+              <div data-smartrr-product-search-mobile-cta>
+                ${SVGList.searchIcon}
+              </div>
+            </div>
+          </div>
+          <div data-smartrr-product-selection-list class="smartrr-scrollbar">
+            <div data-smartrr-psl-empty class="${ct.HIDE}">
+              ${intl().productEmptySearch}
+            </div>
+          </div>
+        </div>
+      `;
+      sh.addHTML(handler.$loc, productSelectionString);
+      var $productSelection = sh.qsd(handler.$loc, qt.PRODUCTSELECTIONTAG);
+      var $productList = sh.qsd(
+        $productSelection,
+        qt.PRODUCTSELECTION.SELECTIONTAG
+      );
+      GenerateProducts($productList);
+      InitializeCartInfo(handler);
+      InitializeSellingPlan(handler);
+      InitializeConfirmation(handler);
+      UpdateProductSelection(handler);
+      var $productSearch = sh.qsd(
+        $productSelection,
+        qt.PRODUCTSELECTION.HEADER.SEARCH.CONTAINERTAG
+      );
+      var $productHeader = sh.qsd(
+        $productSelection,
+        qt.PRODUCTSELECTION.HEADERTAG
+      );
+      var $searchInput = sh.qs(
+        $productSearch,
+        `[${qt.PRODUCTSELECTION.HEADER.SEARCH.SEARCHINPUTTAG}] input`
+      );
+      var $searchMobileCTA = sh.qsd(
+        $productSearch,
+        qt.PRODUCTSELECTION.HEADER.SEARCH.MOBILECTATAG
+      );
+      var $productEmptySearch = sh.qsd(
+        $productSelection,
+        qt.PRODUCTSELECTION.SELECTION.EMPTYSEARCH
+      );
+      sh.click($searchMobileCTA, function () {
+        sh.addClass($productHeader, ct.ACTIVE);
+        $searchInput.focus();
+      });
+      $searchInput.addEventListener("input", function () {
+        var searchTerm = $searchInput.value;
+        sh.removeClass($productEmptySearch, ct.HIDE);
+        p.collection.products.forEach(function (product) {
+          product.variants.forEach(variant => {
+            if(variant.refs) {
+              sh.removeClass(variant.refs.$form, ct.HIDE);
+            }
+            
+            const productAndVariantTitle = `${product.title} - ${variant.title}`;
+            if(!productAndVariantTitle.toLowerCase().includes(searchTerm.toLowerCase())) {
+              sh.addClass(variant.refs.$form, ct.HIDE);
+            } else {
+              sh.addClass($productEmptySearch, ct.HIDE);
+            }
+          })                
+        });
+      });
+      $searchInput.addEventListener("focusout", function () {
+        sh.removeClass($productHeader, ct.ACTIVE);
+      });
+      var $filterTags = sh.qsad(
+        $productSelection,
+        qt.PRODUCTSELECTION.HEADER.FILTER.TAGSLIST.INDIVIDUALTAG
+      );
+      /**
+       * Filter Products goes through the Product Tags to find
+       * Products with matching Tags.
+       */
+      function FilterProducts() {
+        var tags = [];
+        $filterTags.forEach(function ($tag) {
+          if (sh.containsClass($tag, ct.ACTIVE)) {
+            tags.push(
+              atob(
+                sh.getAttribute(
+                  $tag,
+                  qt.PRODUCTSELECTION.HEADER.FILTER.TAGSLIST.INDIVIDUALTAG
+                )
+              )
+            );
+          }
+        });
+        p.collection.products.forEach(function (product) {
+          if (product.refs) {
+            if (tags.length === 0) {
+              sh.addClass(product.refs.$form, ct.ACTIVE);
+            } else {
+              var active = tags.every(function (tag) {
+                return product.tags.includes(tag);
+              });
+              if (active) {
+                sh.addClass(product.refs.$form, ct.ACTIVE);
+              } else {
+                sh.removeClass(product.refs.$form, ct.ACTIVE);
+              }
+            }
+          }
+        });
+      }
+      $filterTags.forEach(function ($filter) {
+        sh.click($filter, function () {
+          sh.updateClassList($filter, "toggle", ct.ACTIVE);
+          FilterProducts();
+        });
+      });
+      FilterProducts();
+    }
+    /**
+     * Generates Empty Product Cards based on the maximum
+     * number of items in a Pack.
+     * @param handler Handler
+     * @param $productList Parent Container
+     */
+    function GenerateCartProducts(handler, $productList) {
+      const c = handler.cart;
+      const p = handler.cart.pack;
+      for (var index = 0; index < p.maxProducts; index++) {
+        c.cartRefs.push(new ProductRef());
+        GenerateVariant(handler, $productList, c.cartRefs[c.cartRefs.length - 1]);
+      }
+    }
+    function InitializeCartInfo(handler) {
+      const cartInfoString = `
+        <div data-smartrr-cart-info>
+          <div data-smartrr-box-selection>
+            <div data-smartrr-box-selection-progress-bar>
+              <span data-smartrr-bspb-bar></span>
+              <div data-smartrr-bspb-full><span>${intl().cartBoxFull}</span></div>
+            </div>
+            <div data-smartrr-box-selection-cards class="smartrr-scrollbar">
+            </div>
+            <div data-smartrr-box-clear>
+              <span>${SVGList.clearAllClose}</span>
+              <span>${intl().cartClear}</span>
+            </div>
+          </div>
+        </div>
+      `;
+      sh.addHTML(handler.$loc, cartInfoString);
+      var $cartInfo = sh.qsd(handler.$loc, qt.CARTINFOTTAG);
+      var $productList = sh.qsd($cartInfo, qt.CARTINFO.BOXSELECTION.CARDLISTTAG);
+      GenerateCartProducts(handler, $productList);
+      var $boxClear = sh.qsd($cartInfo, qt.CARTINFO.BOXSELECTION.BOXCLEARTAG);
+      sh.click($boxClear, function () {
+        Cart.ClearCart(handler);
+      });
+    }
+    function InitializeSellingPlan(handler) {
+      function GenerateSellingPlans(handler) {
+        var sellingPlanListString = `
+          <div data-smartrr-ssp-plan="">
+            <span>${intl().cartOneTime}</span>
+          </div>
+        `;
+        if (handler.bundle.group) {
+          handler.bundle.group.selling_plans.forEach(function (plan) {
+            /* @note: '{ { H } }' no space turns into Liquid. */
+            if (plan.name.includes("{{ hidden_text }}")) {
+              return;
+            }
+            var planName = plan.name;
+            if (plan.options.length) {
+              planName = plan.options[0].value;
+            }
+            sellingPlanListString += `
+              <div data-smartrr-ssp-plan="${plan.id}">
+                <span>${planName}</span>
+              </div>
+            `;
+          });
+        }
+        return sellingPlanListString;
+      }
+      var sellingPlanString = `
+        <div data-smartrr-selling-plan-selection>
+          <div data-smartrr-ssp-header>
+            <span>${intl().cartFrequency}</span>
+          </div>
+          <div data-smartrr-ssp-plans>
+            ${GenerateSellingPlans(handler)}
+          </div>
+        </div>
+      `;
+      sh.addHTML(handler.$loc, sellingPlanString);
+      var $sellingPlans = sh.qsd(handler.$loc, qt.CARTINFO.PLANSELECTIONTAG);
+      var $plans = sh.qsad(
+        $sellingPlans,
+        qt.CARTINFO.PLANSELECTION.PLANLIST.PLANTAG
+      );
+      $plans.forEach(function ($plan) {
+        sh.click($plan, function () {
+          sh.removeThenAddClass($plans, $plan, ct.ACTIVE);
+          var sellingPlan = sh.getAttribute(
+            $plan,
+            qt.CARTINFO.PLANSELECTION.PLANLIST.PLANTAG
+          );
+          handler.cart.sellingPlan = sellingPlan;
+          CanConfirm(handler);
+        });
+      });
+    }
+    /**
+     * Updates all prices related to the Build a Box
+     * @param handler Handler
+     */
+    function UpdatePrices(handler) {
+      var c = handler.cart;
+      var variantId = c.pack.buyWithVariant;
+      var product = handler.bundle.bundleProduct;
+      var sellingPlanId = typeof c.sellingPlan !== "undefined"? c.sellingPlan: "";
+
+      var price = 0;
+
+      product.variants.forEach(function (variant) {
+        if (sh.seq(variant.id, variantId)) {
+          price = variant.price;
+          variant.selling_plan_allocations.forEach(function (alloc) {
+            if (sh.seq(alloc.selling_plan_id, sellingPlanId)) {
+              price = alloc.price;
+            }
+          });
+        }
+      });
+
+      var $prices = sh.qsad(handler.$loc, qt.PRICEINFO.PRICETAG);
+
+      $prices.forEach(function ($price) {
+        $price.textContent =
+          typeof Shopify !== "undefined"?
+            Intl.NumberFormat(Shopify.locale, {
+              style: "currency",
+              currency: Shopify.currency.active,
+              minimumFractionDigits: 2,
+            }).format(price / 100):
+            `$${ price / 100 }`;
+      });
+    }
+    /**
+     * Updates the Build a Box based on whether the user has filled up the
+     * cart or not.
+     * @param handler Handler
+     * @returns Whether User can press confirm or Not
+     */
+    function CanConfirm(handler) {
+      var c = handler.cart;
+      var $confirmation = sh.checkqsd(handler.$loc, qt.CARTINFO.CONFIRMATIONTAG);
+      var $sellingPlans = sh.checkqsd(handler.$loc, qt.CARTINFO.PLANSELECTIONTAG);
+      var $plans = sh.qsad(
+        $sellingPlans,
+        qt.CARTINFO.PLANSELECTION.PLANLIST.PLANTAG
+      );
+      if ($confirmation) {
+        if (sh.seq(c.currentNum, c.pack.maxProducts)) {
+          sh.addClass($sellingPlans, ct.ACTIVE);
+          $plans.forEach(function ($plan) {
+            if (sh.containsClass($plan, ct.ACTIVE)) {
+              sh.addClass($confirmation, ct.ACTIVE);
+            }
+          });
+        } else {
+          sh.removeClass([$confirmation, $sellingPlans], ct.ACTIVE);
+        }
+      }
+      UpdatePrices(handler);
+      return sh.seq(c.currentNum, c.pack.maxProducts);
+    }
+    /**
+     * Adds the Build a Box Cart to the Shopify Cart
+     * @param handler Handler
+     */
+    function addBundleToCartAndRedirect(handler) {
+      const c = handler.cart;
+      const b = handler.bundle;
+      var bundleInfo = {
+        items: [],
+        date: new Date().getTime(),
+        page: window.location.toString(),
+        bundle: {
+          name: b.name,
+          slug: b.slug,
+        },
+      };
+      const properties = {};
+      properties["Bundle"] = b.name;
+      Object.keys(c.lineItems).forEach(function (variantId) {
+        var lineItem = handler.cart.lineItems[Number(variantId)];
+        Log(lineItem.variant.title, lineItem.variant.title.includes("Default"));
+        bundleInfo.items.push({
+          id: lineItem.variant.id,
+          quantity: lineItem.quantity,
+          selling_plan: c.sellingPlan,
+        });
+        properties[`${lineItem.product.title} - ${lineItem.variant.title}`] = lineItem.quantity;
+      });
+      properties["_smartrr_info"] = JSON.stringify(bundleInfo);
+      var formData = {
+        items: [
+          {
+            id: c.pack.buyWithVariant,
+            quantity: 1,
+            selling_plan: c.sellingPlan,
+            properties: properties,
+          },
+        ],
+      };
+      Log("Form: ", formData);
+      fetch("/cart/add.js", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }).then(function () {
+        window.location.href = "/cart";
+      });
+    }
+    /**
+     * Add Confirmation CTA
+     * @param handler Handler
+     */
+    function InitializeConfirmation(handler) {
+      var confirmationString = `
+        <div data-smartrr-confirmation-container>
+          <div data-smartrr-confirmation-cta>
+            <span data-smartrr-ccta-text>${intl().cartConfirm} — </span>
+            <span data-smartrr-ccta-price data-smartrr-bundle-price-amount></span>
+          </div>
+        </div>
+      `;
+      sh.addHTML(handler.$loc, confirmationString);
+      var $confirmation = sh.qsd(handler.$loc, qt.CARTINFO.CONFIRMATIONTAG);
+      var $cta = sh.qsd($confirmation, qt.CARTINFO.CONFIRMATION.CTATAG);
+      sh.click($cta, function () {
+        addBundleToCartAndRedirect(handler);
+      });
+      CanConfirm(handler);
+    }
+    function reInitializeBundle() {
+      $externalBundleLocation.innerHTML = "";
+      var handler = new Handler(
+        externalBundleInformation,
+        new Cart(),
+        $externalBundleLocation
+      );
+      var bundle = handler.bundle;
+      /**
+       * Get the Selling Plan Group from the Virtual Bundle Product
+       */
+      if (bundle.bundleProduct && bundle.bundleProduct.selling_plan_groups) {
+        bundle.bundleProduct.selling_plan_groups.forEach(function (group) {
+          if (sh.seq(btoa(group.options[0].name), bundle.groupName)) {
+            bundle.group = group;
+          }
+        });
+      }
+      InitializeCart(handler);
+      InitializeHeader(handler);
+      InitializePackSelection(handler);
+      Log("Handler: ", handler);
+    }
+    try {
+      reInitializeBundle();
+    } catch (error) {
+      console.error("Smartrr Bundle Fatal Error: ", error);
+    }
+  }
+</script>
+
+<script>
+  if (["complete", "loaded"].indexOf(document.readyState) !== -1) {
+    GenerateSmartrrBundle(SmartrrBundleInformation, document.querySelector('[data-smartrr-bundle-container]'));
+  } else {
+    document.addEventListener("DOMContentLoaded", function () {
+      GenerateSmartrrBundle(SmartrrBundleInformation, document.querySelector('[data-smartrr-bundle-container]'));
+    });
+  }
+</script>

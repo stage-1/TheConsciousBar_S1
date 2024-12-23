@@ -1,0 +1,146 @@
+
+{% assign smartrr_collections = "build-your-own-box" %}
+{% assign smartrr_collection_list = smartrr_collections | split : "," %}
+{% assign smartrr_group_name = "RGVsaXZlcnkgRXZlcnk=" %}
+{% assign smartrr_bundle_product = all_products['build-your-own-box'] %}
+
+<script data-smartrr-modal-page-js>
+  var SmartrrBundleInformation = {
+    name: "Build Your Own Box",
+    slug: "build-your-own-box/2979ab9b-ac1d-403b-9b07-eab5c9f7a91e",
+    
+    searchFilters: [
+	{
+		"name": "default",
+		"searches": [
+			{
+				"searchTag": "",
+				"displayTerm": ""
+			}
+		]
+	}
+],
+
+    collections: [
+      {% for coll in smartrr_collection_list %}
+        {
+          name: "{{ coll }}",
+          products: [
+            {% for collection_product in collections[coll].products %}
+              {% assign product_allowed = false %}
+              {% assign found_group = product.selling_plan_groups[0] %}
+              {% for group in collection_product.selling_plan_groups %}
+                {% assign group_name = group.options[0].name | base64_encode %}
+                {% if group_name == smartrr_group_name %}                  
+                  {% assign product_allowed = true %}
+                  {% assign found_group = group %}
+                {% endif %}
+              {% endfor %}
+              {% if product_allowed and collection_product.available %}
+                {
+                  available: {{ collection_product.available }},
+                  id: {{ collection_product.id }},
+                  title: "{{ collection_product.title }}",
+                  handle: "{{ collection_product.handle }}",
+                  tags: {{ collection_product.tags | json }},
+                  image: "{{ collection_product.featured_image | image_url: width: 720 }}",
+                  url: "{{ collection_product.url }}",
+                  variants: [
+                    {% for variant in collection_product.variants %}
+                    {% assign variant_allowed = false %}
+                      {% for alloc in variant.selling_plan_allocations %}
+                        {% if alloc.selling_plan_group_id == found_group.id %}
+                          {% assign variant_allowed = true %}
+                        {% endif %}
+                      {% endfor %}
+                      {% if variant_allowed %}
+                        {
+                          available: {{ variant.available }},
+                          id: {{ variant.id }},
+                          {% if variant.image %}
+                          image: "{{ variant.image | image_url: width: 720  }}",
+                          {% endif %}
+                          title: "{{ variant.title }}",
+                          price: {{ variant.price }},
+                          selling_plan_allocations: [
+                            {% for alloc in variant.selling_plan_allocations %}
+                              {
+                                {% if alloc.compare_at_price %}
+                                compare_at_price: {{ alloc.compare_at_price }},
+                                {% endif %}
+                                per_delivery_price: {{ alloc.per_delivery_price }},
+                                price: {{ alloc.price }},
+                                price_adjustments: [
+                                  {% for adj in alloc.price_adjustments %}
+                                    {{ adj.price }},
+                                  {% endfor %}
+                                ],
+                                selling_plan_group_id: "{{ alloc.selling_plan_group_id }}",
+                                selling_plan_id: "{{ alloc.selling_plan.id }}",
+                              },
+                            {% endfor %}
+                          ],
+                          url: "{{ variant.url }}",
+                        },
+                      {% endif %}
+                    {% endfor %}
+                  ],
+                },
+              {% endif %}
+            {% endfor %}
+          ]
+        },
+      {% endfor %}
+    ],
+
+    group: {
+      selling_plans: []
+    },
+
+    groupName: "{{ smartrr_group_name }}",
+
+    bundleProduct: {{ smartrr_bundle_product | json }},
+
+    packs: [
+	{
+		"name": "5 Pack",
+		"alert": "Save 5%",
+		"description": "",
+		"maxProducts": 5,
+		"minProducts": 5,
+		"buyWithVariant": "43844247847103",
+		"collectionString": "build-your-own-box",
+		"variantSelection": "",
+		"searchFilterString": "default"
+	},
+	{
+		"name": "10 Pack",
+		"alert": "Save 15%",
+		"description": "",
+		"maxProducts": 10,
+		"minProducts": 10,
+		"buyWithVariant": "43844247879871",
+		"collectionString": "build-your-own-box",
+		"variantSelection": "",
+		"searchFilterString": "default"
+	},
+	{
+		"name": "15 Pack",
+		"alert": "Save 20%",
+		"description": "",
+		"maxProducts": 15,
+		"minProducts": 15,
+		"buyWithVariant": "43844247912639",
+		"collectionString": "build-your-own-box",
+		"variantSelection": "",
+		"searchFilterString": "default"
+	}
+],
+  }
+</script>
+
+<div data-smartrr-modal-bundle-container>
+  <div class="smartrr-scrollbar" data-smartrr-bundle-container="Build Your Own Box"></div>
+</div>
+
+{% render 'smartrr-bundle-js' %}

@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "pf-ee792e60": {
+      "type": "pf-ee792e60",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "pf-ee792e60"
+  ]
+}

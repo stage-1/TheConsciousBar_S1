@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "pf-d954f77a": {
+      "type": "pf-d954f77a",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "pf-d954f77a"
+  ]
+}

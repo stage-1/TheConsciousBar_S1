@@ -1,0 +1,168 @@
+{{ 'section-scrolling-promotion.css' | asset_url | stylesheet_tag }}
+
+{%- render 'section-spacing-collapsing' -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --section-spacing-inline: 0;
+    --scrolling-text-font-size: {% if section.settings.text_size == 'xsmall' %}1.125rem{% elsif section.settings.text_size == 'small' %}2.5rem{% elsif section.settings.text_size == 'medium' %}3.75rem{% elsif section.settings.text_size == 'large' %}5rem{% else %}7.5rem{% endif %};
+  }
+
+  #shopify-section-{{ section.id }} .text-custom {
+    color: {{ section.settings.text_color }};
+  }
+
+  @media screen and (min-width: 700px) {
+    #shopify-section-{{ section.id }} {
+      --scrolling-text-font-size: {% if section.settings.text_size == 'xsmall' %}1.5rem{% elsif section.settings.text_size == 'small' %}3.75rem{% elsif section.settings.text_size == 'medium' %}5rem{% elsif section.settings.text_size == 'large' %}8.75rem{% else %}12.5rem{% endif %};
+    }
+  }
+</style>
+
+{%- if section.settings.text_size == 'xsmall' -%}
+  {%- assign is_tight = true -%}
+{%- endif -%}
+
+<div {% render 'section-properties', tight: is_tight, full_width: true %}>
+  <div class="section-stack">
+    {%- render 'section-header',
+      subheading: section.settings.subheading,
+      heading: section.settings.title,
+      content: section.settings.content,
+      text_alignment: 'center'
+    -%}
+
+    <scrolling-promotion
+      data-speed="{{ section.settings.speed }}"
+      class="scrolling-promotion scrolling-promotion--left section--padding"
+    >
+      <div class="promotion">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'scrolling_text' -%}
+              {%- liquid
+                assign image_height = block.settings.height
+                assign image_height_2x = block.settings.height | times: 2
+              -%}
+              <div
+                class="promotion__item media-wrapper media-wrapper--small"
+                style="--image-height: {{ image_height }}px"
+                {{ block.shopify_attributes }}
+              >
+                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}" class="promotion__link">
+                {%- endif -%}
+                {%- if block.settings.image != blank -%}
+                  <div class="image-animate media">
+                    <img
+                      srcset="{{ block.settings.image | image_url: height: image_height }} 1x, {{ block.settings.image | image_url: height: image_height_2x }} 2x"
+                      src="{{ block.settings.image | image_url: height: image_height }}"
+                      alt="{{ block.settings.image.alt | escape }}"
+                      loading="lazy"
+                      width="{{ image_height | times: block.settings.image.aspect_ratio }}"
+                      height="{{ image_height }}"
+                      class="promotion__image image-fit"
+                      is="lazy-image"
+                    >
+                  </div>
+                {%- else -%}
+                  {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+                {%- if block.settings.link != blank -%}
+                  </a>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </scrolling-promotion>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "New Scrolling Image",
+  "class": "shopify-section--scrolling-text",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "blocks": [
+    {
+      "type": "scrolling_text",
+      "name": "scrolling image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "height",
+          "min": 0,
+          "max": 200,
+          "step": 4,
+          "default": 80,
+          "unit": "px",
+          "label": "Height"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 0.5,
+      "max": 2.5,
+      "step": 0.1,
+      "label": "Scrolling speed",
+      "unit": "s",
+      "default": 1.6
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Organize content into multiple columns to share useful information to your customers about your products, values...</p>"
+    },
+    {
+      "type": "header",
+      "content": "Colors",
+      "info": "Gradient replaces solid colors when set. Gradient text outline and gradient background cannot be combined."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Scrolling Image"
+    }
+  ]
+}
+{% endschema %}

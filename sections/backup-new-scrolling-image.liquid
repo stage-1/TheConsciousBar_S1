@@ -1,0 +1,142 @@
+{{ 'new-scrolling-image.css' | asset_url | stylesheet_tag }}
+
+  {%- render 'section-spacing-collapsing' -%}
+
+  <style>
+    #shopify-section-{{ section.id }} {
+      --section-spacing-inline: 0;
+      --scrolling-text-font-size: {% if section.settings.text_size == 'xsmall' %}1.125rem{% elsif section.settings.text_size == 'small' %}2.5rem{% elsif section.settings.text_size == 'medium' %}3.75rem{% elsif section.settings.text_size == 'large' %}5rem{% else %}7.5rem{% endif %};
+    }
+
+    #shopify-section-{{ section.id }} .text-custom {
+      color: {{ section.settings.text_color }};
+    }
+
+    @media screen and (min-width: 700px) {
+      #shopify-section-{{ section.id }} {
+        --scrolling-text-font-size: {% if section.settings.text_size == 'xsmall' %}1.5rem{% elsif section.settings.text_size == 'small' %}3.75rem{% elsif section.settings.text_size == 'medium' %}5rem{% elsif section.settings.text_size == 'large' %}8.75rem{% else %}12.5rem{% endif %};
+      }
+    }
+  </style>
+
+  {%- if section.settings.text_size == 'xsmall' -%}
+    {%- assign is_tight = true -%}
+  {%- endif -%}
+
+<marquee-image class="scrolling-promotion scrolling-promotion--left">
+  <div {% render 'section-properties', tight: is_tight, full_width: true %}> 
+    {% comment %}
+    {%- capture section_content -%}
+        {%- for i in (1..10) -%}
+          {%- for block in section.blocks -%}
+            {% if block.type == 'scrolling_text' %}
+                {% if block.settings.image != blank %}
+                  <div class="loop-text">{{ block.settings.text }}
+                    {{ block.settings.image | image_url: width: 100 | image_tag: loading: 'lazy', widths: '100, 200' }}
+                 </div>
+                {% endif %}
+            {% endif %}
+          {%- endfor -%}
+        {%- endfor -%}
+    {%- endcapture -%}
+    {% endcomment %}
+
+    {%- capture section_content -%}
+          {%- for block in section.blocks -%}
+            {% if block.type == 'scrolling_text' %}
+                {% if block.settings.image != blank %}
+                <div class="promotion__item">                  
+                  {{ block.settings.image | image_url: width: 100 | image_tag: loading: 'lazy', widths: '100, 200' }}
+                </div>
+                {% endif %}
+            {% endif %}
+          {%- endfor -%}
+    {%- endcapture -%}
+
+    <div class="section-stack">
+      {%- render 'section-header', subheading: section.settings.subheading, heading: section.settings.title, content: section.settings.content, text_alignment: 'center' -%}
+
+      {% comment %}
+      <div class="scrolling-anim">
+        <marquee class="marquee" behavior="scroll" scrollamount="30" scrolldelay="400" loop="true">
+          <div class="loop-text-container">
+            {{ section_content }}
+          </div>
+        </marquee>
+      </div>
+      {% endcomment %}
+
+      <div class="promotion_wrap">
+         <div class="promotion promotion--animated">
+           {{- section_content -}}
+         </div>
+      </div>
+
+
+      
+    </div>
+  </div>
+</marquee-image>
+
+{% schema %}
+{
+  "name": "New Scrolling Image",
+  "class": "shopify-section--scrolling-text",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "blocks": [
+    {
+      "type": "scrolling_text",
+      "name": "scrolling image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Organize content into multiple columns to share useful information to your customers about your products, values...</p>"
+    },
+    {
+      "type": "header",
+      "content": "Colors",
+      "info": "Gradient replaces solid colors when set. Gradient text outline and gradient background cannot be combined."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text"
+    }
+  ]
+}
+{% endschema %}
