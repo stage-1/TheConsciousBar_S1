@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "slideshow": {
@@ -6,8 +15,6 @@
         "video_9Daief": {
           "type": "video",
           "settings": {
-            "lazyload": true,
-            "poster_image": "shopify://shop_images/WEB_2.0_BANNER_DESKTOP.jpg",
             "video": "shopify://files/videos/LOWRES_webheadervideo_v1_mateo.mp4",
             "mobile_video": "shopify://files/videos/9-16_LOWRES_webheadervideo_v1_mateo (1).mp4",
             "content_max_width": 1100,
@@ -18,7 +25,7 @@
             "word_with_spacing": "DATES",
             "heading_tag": "h0",
             "button_text": "SHOP NOW",
-            "button_link": "shopify://collections/new-collectionxyzxyz",
+            "button_link": "shopify://collections/all-products",
             "text_color": "#f5edde",
             "button_background": "#f5edde",
             "button_text_color": "#39180f",
@@ -52,7 +59,10 @@
           }
         }
       },
-      "block_order": ["video_9Daief", "image_mhH3b8"],
+      "block_order": [
+        "video_9Daief",
+        "image_mhH3b8"
+      ],
       "custom_css": [
         ".h0 {font-size: 86px; line-height: 0.85; letter-spacing: 0.5px;}",
         ".subheading {font-family: \"Quincy CF\"; font-size: 22.5px; letter-spacing: 0.7px; font-weight: 400; line-height: 110%;}",
@@ -87,7 +97,7 @@
             "title": "",
             "heading_tag": "h0",
             "button_text": "",
-            "button_link": "shopify://collections/new-collectionxyzxyz",
+            "button_link": "shopify://collections/all-products",
             "text_color": "#ffffff",
             "button_background": "#ffffff",
             "button_text_color": "#000000",
@@ -98,7 +108,9 @@
           }
         }
       },
-      "block_order": ["image_i88Tpg"],
+      "block_order": [
+        "image_i88Tpg"
+      ],
       "disabled": true,
       "settings": {
         "full_width": true,
@@ -122,7 +134,7 @@
         ".section-full {padding-top: 48px; padding-bottom: 48px;}"
       ],
       "settings": {
-        "collection": "new-collectionxyzxyz",
+        "collection": "all-products",
         "products": [],
         "full_width": true,
         "stack_products": false,
@@ -154,13 +166,15 @@
             "subheading": "",
             "content": "<p>Our mission is simple: Create <strong>freakishly delicious chocolate</strong> that's actually good for you</p>",
             "button_text": "EXPLORE THE FLAVORS",
-            "button_url": "shopify://collections/new-collectionxyzxyz",
+            "button_url": "shopify://collections/all-products",
             "animate_impact_text": false,
             "animate_impact_text_duration": 2
           }
         }
       },
-      "block_order": ["9889fdb0-51fd-475b-a0e9-56e091fab9ae"],
+      "block_order": [
+        "9889fdb0-51fd-475b-a0e9-56e091fab9ae"
+      ],
       "custom_css": [
         "@media screen and (min-width: 700px) {h2 {font-size: 48px; }}",
         ".section-full {padding-top: 48px; padding-bottom: 0px;}"
@@ -186,7 +200,9 @@
       "blocks": {
         "scrolling_text_TtpH9E": {
           "type": "scrolling_text",
-          "settings": { "image": "shopify://shop_images/Gluten_Free.png" }
+          "settings": {
+            "image": "shopify://shop_images/Gluten_Free.png"
+          }
         },
         "scrolling_text_hTDe3B": {
           "type": "scrolling_text",
@@ -208,15 +224,21 @@
         },
         "scrolling_text_NXnyPy": {
           "type": "scrolling_text",
-          "settings": { "image": "shopify://shop_images/USDA_SMALLER.png" }
+          "settings": {
+            "image": "shopify://shop_images/USDA_SMALLER.png"
+          }
         },
         "scrolling_text_bKzYrb": {
           "type": "scrolling_text",
-          "settings": { "image": "shopify://shop_images/Kosher.png" }
+          "settings": {
+            "image": "shopify://shop_images/Kosher.png"
+          }
         },
         "scrolling_text_nR9xaA": {
           "type": "scrolling_text",
-          "settings": { "image": "shopify://shop_images/Paleo_Approved.png" }
+          "settings": {
+            "image": "shopify://shop_images/Paleo_Approved.png"
+          }
         },
         "scrolling_text_WeDYj6": {
           "type": "scrolling_text",
@@ -270,7 +292,9 @@
           }
         }
       },
-      "block_order": ["item_6iWVgz"],
+      "block_order": [
+        "item_6iWVgz"
+      ],
       "custom_css": [
         "@media (min-width: 749px) {.heading {font-size: 80px; }}",
         ".section-blends {padding-top: 40px; padding-bottom: 5px;}"
@@ -296,7 +320,10 @@
       "blocks": {
         "heading_JTRpMN": {
           "type": "heading",
-          "settings": { "text": "Why Dates?", "heading_tag": "h1" }
+          "settings": {
+            "text": "Why Dates?",
+            "heading_tag": "h1"
+          }
         },
         "richtext_7qXQmW": {
           "type": "richtext",
@@ -337,7 +364,9 @@
         "button_M8km4G"
       ],
       "disabled": true,
-      "custom_css": [".text-custom {padding-top: 0px; padding-bottom: 0px;}"],
+      "custom_css": [
+        ".text-custom {padding-top: 0px; padding-bottom: 0px;}"
+      ],
       "settings": {
         "full_width": true,
         "allow_transparent_header": false,
@@ -395,7 +424,11 @@
           }
         }
       },
-      "block_order": ["item_xk4qLB", "item_VTnwML", "item_yPathk"],
+      "block_order": [
+        "item_xk4qLB",
+        "item_VTnwML",
+        "item_yPathk"
+      ],
       "custom_css": [
         ".section-full {padding-top: 48px; padding-bottom: 24px;}"
       ],
@@ -438,7 +471,9 @@
           }
         }
       },
-      "block_order": ["image_88PJQJ"],
+      "block_order": [
+        "image_88PJQJ"
+      ],
       "disabled": true,
       "custom_css": [],
       "settings": {
@@ -545,7 +580,9 @@
           }
         }
       },
-      "block_order": ["item_Mw3FGg"],
+      "block_order": [
+        "item_Mw3FGg"
+      ],
       "custom_css": [
         "@media (min-width: 749px) {.heading {font-size: 88px; }}",
         ".section-blends {padding-top: 40px; padding-bottom: 20px;}"
@@ -974,7 +1011,9 @@
           }
         }
       },
-      "block_order": ["item_mGzrUz"],
+      "block_order": [
+        "item_mGzrUz"
+      ],
       "disabled": true,
       "custom_css": [
         ".section-blends {padding-top: 40px; padding-bottom: 40px;}",
@@ -1005,7 +1044,7 @@
             "image": "shopify://shop_images/ewdxx.jpg",
             "title": "",
             "heading_tag": "h4",
-            "link_url": "shopify://collections/new-collectionxyzxyz",
+            "link_url": "shopify://collections/all-products",
             "link_text": "",
             "mobile_text_position": "place-self-center text-center",
             "desktop_column_span": 2,
@@ -1027,7 +1066,7 @@
             "image": "shopify://shop_images/EDITED-2.jpg",
             "title": "BUILD YOUR OWN BUNDLE AND SAVE",
             "heading_tag": "h2",
-            "link_url": "shopify://collections/new-collectionxyzxyz",
+            "link_url": "shopify://collections/all-products",
             "link_text": "SAVE NOW",
             "mobile_text_position": "place-self-center text-center",
             "desktop_column_span": 2,
@@ -1049,7 +1088,7 @@
             "image": "shopify://shop_images/img_84854-1677048997413.webp",
             "title": "",
             "heading_tag": "h4",
-            "link_url": "shopify://collections/new-collectionxyzxyz",
+            "link_url": "shopify://collections/all-products",
             "link_text": "",
             "mobile_text_position": "place-self-center text-center",
             "desktop_column_span": 2,
@@ -1066,7 +1105,11 @@
           }
         }
       },
-      "block_order": ["image_dWhzMj", "image_VyUC7F", "image_aFmmyn"],
+      "block_order": [
+        "image_dWhzMj",
+        "image_VyUC7F",
+        "image_aFmmyn"
+      ],
       "custom_css": [
         ".section-full {padding-top: 48px; padding-bottom: 40px;}"
       ],
@@ -1089,18 +1132,41 @@
             "text": "<h1>Choosing is never easy... so let’s not.</h1>"
           }
         },
-        "vendor": { "type": "vendor", "settings": {} },
-        "title": { "type": "title", "settings": { "heading_tag": "h2" } },
-        "badges": { "type": "badges", "settings": {} },
+        "vendor": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_tag": "h2"
+          }
+        },
+        "badges": {
+          "type": "badges",
+          "settings": {}
+        },
         "price": {
           "type": "price",
-          "settings": { "show_taxes_notice": false }
+          "settings": {
+            "show_taxes_notice": false
+          }
         },
-        "rating": { "type": "rating", "settings": { "show_empty": false } },
-        "separator": { "type": "separator", "settings": {} },
+        "rating": {
+          "type": "rating",
+          "settings": {
+            "show_empty": false
+          }
+        },
+        "separator": {
+          "type": "separator",
+          "settings": {}
+        },
         "description": {
           "type": "description",
-          "settings": { "collapse_content": true }
+          "settings": {
+            "collapse_content": true
+          }
         },
         "variant-picker": {
           "type": "variant_picker",
@@ -1113,7 +1179,10 @@
             "size_chart_page": ""
           }
         },
-        "quantity-selector": { "type": "quantity_selector", "settings": {} },
+        "quantity-selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
         "buy-buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -1261,7 +1330,11 @@
           }
         }
       },
-      "block_order": ["item_FGKt3m", "item_fUmkwE", "item_ULqRxD"],
+      "block_order": [
+        "item_FGKt3m",
+        "item_fUmkwE",
+        "item_ULqRxD"
+      ],
       "custom_css": [
         ".section-full {padding-top: 32px; padding-bottom: 48px;}"
       ],
